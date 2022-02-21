@@ -14,7 +14,7 @@
                 <input type="password" name="password" id="password" required>
             </div>
             <div class="form-login">
-                <input type="submit" value="Se connecter">
+                <input type="submit" value="Connexion">
             </div>
         </form>
     </div>

@@ -1,5 +1,7 @@
 const express = require("express");
 
+const userRoutes = require("./routes/user");
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -16,5 +18,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use("/api/", userRoutes);
 
 module.exports = app;
