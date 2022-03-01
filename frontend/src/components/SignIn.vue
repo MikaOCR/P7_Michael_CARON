@@ -1,52 +1,110 @@
 <template>
-    <div id="signIn">
-        <form action="" method="get" class="form-signIn">
-            <div class="form-signIn">
-                <label for="name">Nom: </label>
-                <input type="text" name="name" id="name" required>
-            </div>
-            <div class="form-signIn">
-                <label for="email">Email: </label>
-                <input type="email" name="email" id="email" required>
-            </div>
-            <div class="form-signIn">
-                <label for="password">Mot de passe: </label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <div class="form-signIn">
-                <input type="submit" value="S'inscrire !">
-            </div>
-        </form>
-    </div>
+  <div id="signIn">
+    <img alt="Groupomania logo" src="../assets/icon.png" />
+    <form action="" method="get" class="form-signIn">
+      <div class="form-signIn">
+        <label for="lastName">Nom: </label>
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          v-model.trim="lastName"
+          required
+        />
+      </div>
+      <div class="form-signIn">
+        <label for="firstName">Prenom: </label>
+        <input
+          type="text"
+          name="firstName"
+          id="firstName"
+          v-model.trim="firstName"
+          required
+        />
+      </div>
+      <div class="form-signIn">
+        <label for="email">Email: </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          v-model.trim="email"
+          required
+        />
+      </div>
+      <div class="form-signIn">
+        <label for="password">Mot de passe: </label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          v-model.trim="password"
+          required
+        />
+      </div>
+      <div class="form-signIn">
+        <button @click="createAccount()" class="button">
+          Créer mon compte
+        </button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
-
+export default {
+  name: "SignIn",
+  data: function () {
+    return {
+      lastName: "",
+      firstName: "",
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    createAccount: function () {
+      this.$store.dispatch('createAccount', {
+        lastName: this.lastName,
+        firstName: this.firstName,
+        email: this.email,
+        password: this.password,
+      })
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
+img {
+  width: 200px;
+  height: auto;
+}
 
 #signIn {
-    display: flex;
-    justify-content: center;
-    margin: 10px 0 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 10px 0;
+  padding-top: 10px;
+  background-color: #ffff;
 }
 
 form.form-signIn {
-    display: table;
+  display: table;
 }
 
 div.form-signIn {
-    display: table-row;
+  display: table-row;
 }
 
-label, input {
-    display: table-cell;
-    margin-bottom: 10px;
+label,
+input {
+  display: table-cell;
+  margin-bottom: 10px;
 }
 
 label {
-    padding-right: 5px;
+  padding-right: 5px;
 }
-
 </style>

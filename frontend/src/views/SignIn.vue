@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Groupomania logo" src="../assets/icon.png">
     <SignIn />
   </div>
 </template>

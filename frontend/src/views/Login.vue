@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Groupomania logo" src="../assets/icon.png">
+    
     <Login />
   </div>
 </template>
@@ -19,7 +19,5 @@ export default {
 
 <style lang="scss" scoped>
 
-img {
-  width: 5%;
-}
+
 </style>
