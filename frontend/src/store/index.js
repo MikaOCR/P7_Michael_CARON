@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
 
 export default createStore({
   state: {
@@ -11,11 +11,7 @@ export default createStore({
 
   },
   actions: {
-    createAccount: ({commit}, userInfos) => {
-      commit;
-      console.log(userInfos);
-    }
-
+  
   },
   modules: {
 

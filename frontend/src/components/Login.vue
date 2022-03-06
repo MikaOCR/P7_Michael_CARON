@@ -1,15 +1,8 @@
 <template>
     <div id="login">
         <img alt="Groupomania logo" src="../assets/icon.png">
-        <form action="" method="get" class="form-login">
-            <div class="form-login">
-                <label for="lastName">Nom: </label>
-                <input type="text" name="lastName" id="lastName" v-model.trim="lastName" required>
-            </div>
-            <div class="form-login">
-                <label for="firstName">Prenom: </label>
-                <input type="text" name="firstName" id="firstName" v-model.trim="firstName" required>
-            </div>
+
+        <form @submit.prevent="loginAccount" method="POST" class="form-login">
             <div class="form-login">
                 <label for="email">Email: </label>
                 <input type="email" name="email" id="email" v-model.trim="email" required>
@@ -26,17 +19,28 @@
 </template>
 
 <script>
+const axios = require('axios').default;
+
  export default {
-     name: 'Login',
-     data(){
-        return {
-            lastName: '',
-            firstName: '',
-            email: '',
-            password: ''
+  name: "Login",
+    data() {
+      return {
+          email: '',
+          password: ''
+      }
+    },
+
+    methods: {
+        async loginAccount() {
+            const response = await axios.post('/login', {
+                email: this.email,
+                password: this.password
+            });
+
+            localStorage.setItem('token', response.data.token);
         }
     }
- }
+}
 </script>
 
 <style lang="scss" scoped>

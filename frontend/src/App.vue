@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <router-link to="/accueil">Accueil</router-link> |
+    <router-link to="/">Accueil</router-link> |
     <router-link to="/signin">S'inscrire</router-link> |
     <router-link to="/login">Connexion</router-link>
   </div>

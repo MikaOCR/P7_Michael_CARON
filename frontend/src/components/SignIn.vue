@@ -1,78 +1,63 @@
 <template>
   <div id="signIn">
     <img alt="Groupomania logo" src="../assets/icon.png" />
-    <form action="" method="get" class="form-signIn">
+    <form @submit.prevent="createAccount" method="POST" class="form-signIn">
       <div class="form-signIn">
         <label for="lastName">Nom: </label>
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          v-model.trim="lastName"
-          required
-        />
+        <input type="text" name="lastName" id="lastName" v-model.trim="lastName" required/>
       </div>
       <div class="form-signIn">
         <label for="firstName">Prenom: </label>
         <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          v-model.trim="firstName"
-          required
-        />
+          type="text" name="firstName" id="firstName" v-model.trim="firstName" required/>
       </div>
       <div class="form-signIn">
         <label for="email">Email: </label>
         <input
-          type="email"
-          name="email"
-          id="email"
-          v-model.trim="email"
-          required
-        />
+          type="email" name="email" id="email" v-model.trim="email" required/>
       </div>
       <div class="form-signIn">
         <label for="password">Mot de passe: </label>
         <input
-          type="password"
-          name="password"
-          id="password"
-          v-model.trim="password"
-          required
-        />
+          type="password" name="password" id="password" v-model.trim="password" required/>
       </div>
       <div class="form-signIn">
-        <button @click="createAccount()" class="button">
-          Créer mon compte
-        </button>
+        <button type="submit" class="button"> Créer mon compte </button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+const axios = require('axios').default;
+
 export default {
   name: "SignIn",
-  data: function () {
-    return {
-      lastName: "",
-      firstName: "",
-      email: "",
-      password: "",
-    };
-  },
+    data() {
+      return {
+        lastName: '',
+        firstName: '',
+        email: '',
+        password: ''
+      }
+    },
+
   methods: {
-    createAccount: function () {
-      this.$store.dispatch('createAccount', {
+
+    async createAccount(){
+
+      const response = await axios.post('/signin', {
         lastName: this.lastName,
         firstName: this.firstName,
         email: this.email,
-        password: this.password,
-      })
-    },
-  },
-};
+        password: this.password
+      });
+
+      console.log(response);
+      this.$router.push('/login');
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
