@@ -2,7 +2,7 @@
     <div id="login">
         <img alt="Groupomania logo" src="../assets/icon.png">
 
-        <form @submit.prevent="loginAccount" method="POST" class="form-login">
+        <form @submit.prevent="login" method="POST" class="form-login">
             <div class="form-login">
                 <label for="email">Email: </label>
                 <input type="email" name="email" id="email" v-model.trim="email" required>
@@ -14,33 +14,91 @@
             <div class="form-login">
                 <input type="submit" value="Connexion">
             </div>
+            <p v-if="msg">{{ msg }}</p>
         </form>
     </div>
 </template>
 
 <script>
-const axios = require('axios').default;
+/* const axios = require('axios').default; */
+/* import * as yup from "yup";
 
- export default {
+export default {
   name: "Login",
-    data() {
-      return {
-          email: '',
-          password: ''
-      }
+  components: {
+
+  },
+  data() {
+    const schema = yup.object().shape({
+      email: yup.string().required("Email is required!"),
+      password: yup.string().required("Password is required!"),
+    });
+    return {
+      loading: false,
+      message: "",
+      schema,
+    };
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
     },
-
-    methods: {
-        async loginAccount() {
-            const response = await axios.post('/login', {
-                email: this.email,
-                password: this.password
-            });
-
-            localStorage.setItem('token', response.data.token);
-        }
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push("/profile");
     }
-}
+  },
+  methods: {
+    handleLogin(user) {
+      this.loading = true;
+      this.$store.dispatch("auth/login", user).then(
+        () => {
+          this.$router.push("/profile");
+        },
+        (error) => {
+          this.loading = false;
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    },
+  },
+}; */
+
+import AuthService from '@/services/auth.service.js';
+
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      msg: ''
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        const credentials = {
+          email: this.email,
+          password: this.password
+        };
+        const response = await AuthService.login(credentials);
+        this.msg = response.msg;
+        const token = response.token;
+        const user = response.user;
+        this.$store.dispatch('login', { token, user });
+        this.$router.push('/');
+      } catch (error) {
+        this.msg = error.response.data.msg;
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="login">
     
     <Login />
   </div>
@@ -10,7 +10,7 @@
 import Login from '../components/Login.vue'
 
 export default {
-  name: 'home',
+  name: 'login',
   components: {
     Login
   }

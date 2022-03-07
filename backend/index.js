@@ -1,6 +1,11 @@
 const express = require('express');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const app = express();
+
+app.use(cors());
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*"); //accéder à notre API depuis n'importe quelle origine
@@ -26,7 +31,7 @@ async function main() {
     // ... you will write your Prisma Client queries here
 
     //route POST Signin -- Envoi du formulaire d'inscription à la bdd
-    app.post("/signin", async (req, res) => {
+    app.post("/register", async (req, res) => {
         try {
             res.body = await prisma.user.create({
                 data: {
@@ -46,19 +51,16 @@ async function main() {
 
     //route POST Login -- Requête vers la bdd
     app.post("/login", async (req, res) => {
-        try {
-            res.body = await prisma.user.findUnique({
-                where: {
-                    email: req.body.email
-                }
-            });
-            
-            res.status(200).send({"message": "Utilisateur connecté !"});
-        }
-        catch (err) {
-            res.status(500).send(err);
-        }
+        const { email } = req.body;
+        const user = await prisma.user.findUnique({
+            where: {
+                email
+            },
+          })
+          res.status(200).send({"message": "Utilisateur connecté !"});
+          console.log(user);
     });
+
 
     //route POST pour créer un post(forum) -- Envoi du formulaire d'inscription à la bdd
     app.post("/accueil", async (req, res) => {

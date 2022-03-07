@@ -1,7 +1,7 @@
 <template>
-  <div id="signIn">
+  <div id="register">
     <img alt="Groupomania logo" src="../assets/icon.png" />
-    <form @submit.prevent="createAccount" method="POST" class="form-signIn">
+    <form @submit.prevent="signUp" method="POST" class="form-signIn">
       <div class="form-signIn">
         <label for="lastName">Nom: </label>
         <input type="text" name="lastName" id="lastName" v-model.trim="lastName" required/>
@@ -29,10 +29,10 @@
 </template>
 
 <script>
-const axios = require('axios').default;
+import AuthService from '@/services/auth.service.js';
 
 export default {
-  name: "SignIn",
+  name: "Register",
     data() {
       return {
         lastName: '',
@@ -44,17 +44,20 @@ export default {
 
   methods: {
 
-    async createAccount(){
-
-      const response = await axios.post('/signin', {
-        lastName: this.lastName,
-        firstName: this.firstName,
-        email: this.email,
-        password: this.password
-      });
-
-      console.log(response);
-      this.$router.push('/login');
+    async signUp() {
+      try {
+        const credentials = {
+          lastName: this.lastName,
+          firstName: this.firstName,
+          email: this.email,
+          password: this.password
+        };
+        const response = await AuthService.signUp(credentials);
+        this.msg = response.msg;
+        this.$router.push('/login');
+      } catch (error) {
+        this.msg = error.response.data.msg;
+      }
     }
   }
 }
@@ -66,7 +69,7 @@ img {
   height: auto;
 }
 
-#signIn {
+#register {
   display: flex;
   justify-content: center;
   align-items: center;

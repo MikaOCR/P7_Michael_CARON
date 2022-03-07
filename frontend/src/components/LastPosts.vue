@@ -1,5 +1,7 @@
 <template>
     <div id="dataContainer">
+        <h3 v-if="user">Hi, {{user.firstName}} {{user.lastName}}</h3>
+        <h3 v-if="!user">You are not logged</h3>
         <div id="lastMessages">
             <div id="headerMessage" >
                 <div id="userInfo">
@@ -9,28 +11,26 @@
                 <div id="timeStamp"> message envoyé le 22/02/2022 à 12h00</div>
             </div>
             <div id="lastText">
-                <div v-text="forumValues.comment"></div>
+                <div></div>
             </div>
-        </div>
-        <div id="messageContainer">
-            <form action="" method="get" class="form-message"> 
-                <textarea name="comment" id="comment" rows="12" cols="35" maxlength="500" v-model="forumValues.comment">Envoyez votre message.</textarea><br>
-                <input type="submit" name="submitInfo" value="Envoyer">
-            </form>
         </div>
     </div>
 </template>
 
 <script>
+const axios = require('axios').default;
 
 export default {
-    name: 'Forum',
+    name: 'Last_Post',
     data(){
         return{
-            forumValues: {
-                comment: ''
-            }
+            user: null
         }
+    },
+    async created() {
+        const response = await axios.get('user');
+
+        this.user = response.data;
     }
 }
 </script>
@@ -69,16 +69,6 @@ export default {
 
     #lastText {
         margin: 10px;
-    }
-}
-
-#messageContainer {
-    text-align: center;
-    margin: 15px;
-
-    textarea {
-        width: 800px;
-        background-color: #ffff;
     }
 }
 </style>

@@ -1,11 +1,17 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Accueil</router-link> |
-    <router-link to="/signin">S'inscrire</router-link> |
-    <router-link to="/login">Connexion</router-link>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Accueil</router-link> |
+      <router-link to="/register">S'inscrire</router-link> |
+      <router-link to="/login">Se connecter</router-link>
+    </div>
+    <router-view />
   </div>
-  <router-view/>
 </template>
+
+<script>
+
+</script>
 
 <style lang="scss">
 

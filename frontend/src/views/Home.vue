@@ -1,17 +1,26 @@
 <template>
   <div class="home">
-    <Forum />
+    <LastPosts />
+    <TextBox />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Forum from '@/components/Forum.vue'
+import LastPosts from '@/components/LastPosts.vue'
+import TextBox from '@/components/TextBox.vue'
 
 export default {
   name: 'Home',
   components: {
-    Forum
-  }
+    LastPosts,
+    TextBox
+  },
+
+/*   async created() {
+  if (!this.$store.getters.isLoggedIn) {
+    this.$router.push('/login');
+    }
+  } */
 }
 </script>
