@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+/* import { posts } from './modules/posts'; */
 import Axios from 'axios';
 
 const getDefaultState = () => {
@@ -44,6 +45,6 @@ export default createStore({
     }
   },
   modules: {
-
+/*     posts */
   }
 })

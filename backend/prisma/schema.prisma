@@ -11,12 +11,7 @@ model post {
   id         Int      @id @default(autoincrement())
   title      String
   post       String   @db.VarChar(500)
-  created_at DateTime @default(now())
-  updated_at DateTime
-  user_id    Int
-  user       user     @relation(fields: [user_id], references: [id], map: "Post_user_id_fkey")
 
-  @@index([user_id], map: "Post_user_id_fkey")
 }
 
 model user {
@@ -25,5 +20,4 @@ model user {
   lastname  String @db.VarChar(255)
   email     String @unique(map: "User_email_key") @db.VarChar(255)
   password  String @db.VarChar(255)
-  post      post[]
 }

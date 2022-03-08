@@ -1,44 +1,45 @@
 <template>
-    <div id="dataContainer">
-        <h3 v-if="user">Hi, {{user.firstName}} {{user.lastName}}</h3>
-        <h3 v-if="!user">You are not logged</h3>
-        <div id="lastMessages">
+    <div id="lastPost">
+        <h3>Derniers messages</h3>
+        <div id="lastMessages" v-for="post in posts" :key="post.id">
             <div id="headerMessage" >
                 <div id="userInfo">
-                    <div id="firstName">Jean</div>
-                    <div id="lastName">Reno</div>
+                    <div id="firstName">User FirstName</div>
+                    <div id="lastName">User LastName</div>
                 </div>
+                <div id="title">{{ post.title }}</div>
                 <div id="timeStamp"> message envoyé le 22/02/2022 à 12h00</div>
             </div>
-            <div id="lastText">
-                <div></div>
-            </div>
+            <div id="comment">{{ post.post }}</div>
         </div>
     </div>
 </template>
 
 <script>
-const axios = require('axios').default;
+import axios from 'axios';
 
 export default {
-    name: 'Last_Post',
-    data(){
-        return{
-            user: null
+    name: 'lastPost',
+    data () {
+        return {
+            posts: [],
         }
     },
-    async created() {
-        const response = await axios.get('user');
-
-        this.user = response.data;
-    }
+    methods: {
+        getPost(){
+            axios.get('/forum').then(response => this.posts = response.data).catch(error => console.log(error));
+        }
+    },
+    beforeMount(){
+    this.getPost()
+    },
 }
 </script>
 
 
 <style lang="scss" scoped>
 
-#dataContainer {
+#lastPost {
     display: flex;
     flex-direction: column;
     align-items: center;

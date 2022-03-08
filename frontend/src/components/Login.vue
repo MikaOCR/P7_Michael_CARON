@@ -14,7 +14,6 @@
             <div class="form-login">
                 <input type="submit" value="Connexion">
             </div>
-            <p v-if="msg">{{ msg }}</p>
         </form>
     </div>
 </template>
@@ -92,7 +91,7 @@ export default {
         const token = response.token;
         const user = response.user;
         this.$store.dispatch('login', { token, user });
-        this.$router.push('/');
+        this.$router.push('/forum');
       } catch (error) {
         this.msg = error.response.data.msg;
       }

@@ -1,24 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+
 
 const app = express();
 
 app.use(cors());
-
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*"); //accéder à notre API depuis n'importe quelle origine
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-    ); //ajouter les headers mentionnés aux requêtes envoyées vers notre API
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    ); //envoyer des requêtes avec les méthodes mentionnées
-    next();
-  });
 
 app.use(express.json());
 
@@ -63,24 +49,24 @@ async function main() {
 
 
     //route POST pour créer un post(forum) -- Envoi du formulaire d'inscription à la bdd
-    app.post("/accueil", async (req, res) => {
-        const { title, post } = req.body;
-        const forum = await prisma.post.create({
+    app.post("/forum", async (req, res) => {
+        const { title, comment } = req.body;
+        const postInfo = await prisma.post.create({
             data: {
                 title: title,
-                post: post
+                post: comment
             },
         });
-        res.json(forum);
-        console.log(forum);
+        res.status(200).send({"message": "Message envoyé !"});
+        console.log(postInfo);
     });
 
     //route GET pour afficher les x derniers post(forum) -- Requête vers la bdd
-    app.get("/accueil", async (req, res) => {
+    app.get("/forum", async (req, res) => {
         const lastPost = await prisma.post.findMany({
             take: 5,
             orderBy: {
-                created_at: 'desc',
+                id: 'desc',
             },
         });
         res.json(lastPost);
