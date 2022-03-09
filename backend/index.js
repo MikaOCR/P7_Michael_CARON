@@ -28,7 +28,7 @@ async function main() {
                 }
             });
             
-            res.status(200).send({"message": "Utilisateur créée !"});
+            res.status(200).send({"message": "Utilisateur créé !"});
         }
         catch (err) {
             res.status(500).send(err);
@@ -73,8 +73,17 @@ async function main() {
         console.log(lastPost);
     });
 
+    //route GET pour afficher les users -- Requête vers la bdd
+    app.get("/users", async (req, res) => {
+        const allUsers = await prisma.user.findMany({
+            take: 10,
+        });
+        res.json(allUsers);
+        console.log(allUsers);
+    });
+
     //route GET pour afficher UN post(forum) -- Requête vers la bdd
-/*     app.get("/:id", async (req, res) => {
+    app.get("/:id", async (req, res) => {
         const id = req.params.id;
         const thisPost = await prisma.post.findUnique({
             where: {
@@ -83,7 +92,7 @@ async function main() {
         });
         res.json(thisPost);
         console.log(thisPost);
-    }); */
+    });
 
     //route DELETE pour supprimer UN post(forum) -- Requête vers la bdd
     app.delete("/:id", async (req, res) => {

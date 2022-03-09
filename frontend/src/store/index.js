@@ -1,8 +1,8 @@
 import { createStore } from 'vuex';
-/* import { posts } from './modules/posts'; */
-import Axios from 'axios';
+import authModule from './modules/auth';
+/* import axios from 'axios'; */
 
-const getDefaultState = () => {
+/* const getDefaultState = () => {
   return {
     token:'',
     user: {}
@@ -42,9 +42,27 @@ export default createStore({
     },
     logout: ({ commit }) => {
       commit('RESET', '');
+    },
+    forceRerender(){
+      this.listComponent +=1;
     }
   },
   modules: {
-/*     posts */
+
+  }
+}) */
+
+export default createStore({
+  state: {
+
+  },
+  mutations: {
+
+  },
+  actions: {
+
+  },
+  modules: {
+    auth:authModule
   }
 })

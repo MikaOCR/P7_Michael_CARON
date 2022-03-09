@@ -19,85 +19,35 @@
 </template>
 
 <script>
-/* const axios = require('axios').default; */
-/* import * as yup from "yup";
-
-export default {
-  name: "Login",
-  components: {
-
-  },
-  data() {
-    const schema = yup.object().shape({
-      email: yup.string().required("Email is required!"),
-      password: yup.string().required("Password is required!"),
-    });
-    return {
-      loading: false,
-      message: "",
-      schema,
-    };
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
-  },
-  created() {
-    if (this.loggedIn) {
-      this.$router.push("/profile");
-    }
-  },
-  methods: {
-    handleLogin(user) {
-      this.loading = true;
-      this.$store.dispatch("auth/login", user).then(
-        () => {
-          this.$router.push("/profile");
-        },
-        (error) => {
-          this.loading = false;
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
-    },
-  },
-}; */
-
-import AuthService from '@/services/auth.service.js';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   data() {
     return {
       email: '',
       password: '',
-      msg: ''
     };
   },
+  computed: {
+    ...mapGetters('auth', {
+      getterLoginStatus:'getLoginStatus'
+    })
+  },
   methods: {
-    async login() {
-      try {
-        const credentials = {
-          email: this.email,
-          password: this.password
-        };
-        const response = await AuthService.login(credentials);
-        this.msg = response.msg;
-        const token = response.token;
-        const user = response.user;
-        this.$store.dispatch('login', { token, user });
-        this.$router.push('/forum');
-      } catch (error) {
-        this.msg = error.response.data.msg;
+    ...mapActions('auth', {
+      actionLogin:'login'
+    }),
+    async login(){
+      await this.actionLogin({email:this.email, password:this.password});
+      if(this.getterLoginStatus === 'success'){
+        this.$router.push('/profil');
+      }else{
+        alert('failed to login')
       }
     }
   }
-};
+}
+
 </script>
 
 <style lang="scss" scoped>
