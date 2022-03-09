@@ -1,16 +1,17 @@
 const express = require('express');
 const cors = require('cors');
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const auth = require("./middleware/auth");
 
 const app = express();
-
 app.use(cors());
-
 app.use(express.json());
 
 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
+
 
 async function main() {
 
@@ -18,33 +19,58 @@ async function main() {
 
     //route POST Signin -- Envoi du formulaire d'inscription à la bdd
     app.post("/register", async (req, res) => {
-        try {
-            res.body = await prisma.user.create({
-                data: {
-                    lastname: req.body.lastName,
-                    firstname: req.body.firstName,
-                    email: req.body.email,
-                    password: req.body.password
-                }
-            });
-            
+
+        const { password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const newUser = await prisma.user.create({
+            data: {
+                lastname: req.body.lastName,
+                firstname: req.body.firstName,
+                email: req.body.email,
+                password: hashedPassword
+            }
+        });
+        if(!newUser){
+            res.status(500).json({ error })
+          } else {
             res.status(200).send({"message": "Utilisateur créé !"});
-        }
-        catch (err) {
-            res.status(500).send(err);
-        }
+          }
+/*           console.log(newUser); */
     });
 
     //route POST Login -- Requête vers la bdd
     app.post("/login", async (req, res) => {
-        const { email } = req.body;
-        const user = await prisma.user.findUnique({
+        const { email, password } = req.body;
+        const userExist = await prisma.user.findUnique({
             where: {
                 email
             },
           })
-          res.status(200).send({"message": "Utilisateur connecté !"});
-          console.log(user);
+          if(!userExist){
+            res.status(401).json({ error: "Utilisateur non trouvé !" })
+          } else {
+            try{
+                if ( await bcrypt.compare(password, userExist.password)) {
+
+                    const token = jwt.sign(
+                        { userId: userExist.id },
+                        'TOKEN_SECRET',
+                        { expiresIn: "12h" }
+                    )
+                //reponse du serveur avec le userId et le token
+                    res.status(201).json({
+                        userId: userExist.id,
+                        token,
+                    })
+                } else {
+                    res.send("Incorrect Password");
+                }
+            } catch {
+                return res.status(500).send('Some Error has occurred');
+            }
+          };
+/*           console.log(userExist); */
+/*           console.log(token); */
     });
 
 

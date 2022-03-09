@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+/* import {mapActions, mapGetters} from 'vuex'; */
+import axios from 'axios';
 
 export default {
   data() {
@@ -29,12 +30,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('auth', {
+/*     ...mapGetters('auth', {
       getterLoginStatus:'getLoginStatus'
-    })
+    }) */
   },
   methods: {
-    ...mapActions('auth', {
+    /*     ...mapActions('auth', {
       actionLogin:'login'
     }),
     async login(){
@@ -44,8 +45,22 @@ export default {
       }else{
         alert('failed to login')
       }
-    }
-  }
+    } */
+    async login() {
+      const response = await axios.post('/login', {
+        email: this.email,
+        password: this.password
+      });
+      console.log(response);
+      sessionStorage.setItem('userAuth', response.data.token);
+      if(!sessionStorage.getItem('userAuth', undefined)){
+        alert('Connexion impossible')
+        this.$router.push('/login')
+        } else {
+          this.$router.push('/profil');
+        }
+    },
+  },
 }
 
 </script>
