@@ -1,22 +1,27 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/forum">Accueil</router-link> |
-      <router-link to="/register">S'inscrire</router-link> |
-      <router-link to="/login">Se connecter</router-link>
+      <Nav />
     </div>
     <router-view />
   </div>
 </template>
 
 <script>
+import Nav from './components/Nav.vue'
 
+export default {
+  name: 'app',
+  components: {
+    Nav
+  }
+}
 </script>
 
 <style lang="scss">
 
 body {
-  background-color: #f7ded9;
+  background-color: #e2e2e28c;
 }
 
 #app {
@@ -30,10 +35,11 @@ body {
   display: flex;
   justify-content: flex-end;
   padding: 30px;
+  background-color: #2c3e50;
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #ffffff;
     padding: 0px 10px 0 10px;
     
 

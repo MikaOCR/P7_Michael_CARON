@@ -24,8 +24,7 @@ async function main() {
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = await prisma.user.create({
             data: {
-                lastname: req.body.lastName,
-                firstname: req.body.firstName,
+                name: req.body.name,
                 email: req.body.email,
                 password: hashedPassword
             }
@@ -69,18 +68,17 @@ async function main() {
                 return res.status(500).send('Some Error has occurred');
             }
           };
-/*           console.log(userExist); */
-/*           console.log(token); */
+          console.log(userExist);
     });
 
 
     //route POST pour créer un post(forum) -- Envoi du formulaire d'inscription à la bdd
     app.post("/forum", async (req, res) => {
-        const { title, comment } = req.body;
+        const { title, content } = req.body;
         const postInfo = await prisma.post.create({
             data: {
                 title: title,
-                post: comment
+                content: content
             },
         });
         res.status(200).send({"message": "Message envoyé !"});
@@ -100,7 +98,7 @@ async function main() {
     });
 
     //route GET pour afficher les users -- Requête vers la bdd
-    app.get("/users", async (req, res) => {
+    app.get("/profil/:id", async (req, res) => {
         const allUsers = await prisma.user.findMany({
             take: 10,
         });

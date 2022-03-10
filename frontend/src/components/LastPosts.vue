@@ -11,12 +11,12 @@
                 <div id="delete"> message envoyé le 22/02/2022 à 12h00</div>
                 <button id="edit">Editer</button>
             </div>
-            <div id="comment">{{ post.post }}</div>
+            <div id="content">{{ post.post }}</div>
         </div>
         <div id="TextBox">
             <form @submit.prevent="addPost" method="POST" class="form-message"> 
                 <textarea name="title" id="title" rows="1" placeholder="Entrez votre titre..." v-model.trim="Form.title" required></textarea>
-                <textarea name="comment" id="comment" rows="12" cols="35" maxlength="500" placeholder="Envoyez votre message..." v-model.trim="Form.comment" required></textarea><br>
+                <textarea name="content" id="content" rows="12" cols="35" maxlength="500" placeholder="Envoyez votre message..." v-model.trim="Form.content" required></textarea><br>
                 <input type="submit" name="submit" value="Envoyer le message">
             </form>
         </div>
@@ -33,7 +33,7 @@ export default {
             posts: [],
             Form: {
                 title: '',
-                comment: '',
+                content: '',
             },
         }
     },

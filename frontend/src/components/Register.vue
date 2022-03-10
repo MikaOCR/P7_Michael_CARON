@@ -3,13 +3,8 @@
     <img alt="Groupomania logo" src="../assets/icon.png" />
     <form @submit.prevent="signUp" method="POST" class="form-signIn">
       <div class="form-signIn">
-        <label for="lastName">Nom: </label>
-        <input type="text" name="lastName" id="lastName" v-model.trim="lastName" required/>
-      </div>
-      <div class="form-signIn">
-        <label for="firstName">Prenom: </label>
-        <input
-          type="text" name="firstName" id="firstName" v-model.trim="firstName" required/>
+        <label for="name">Nom: </label>
+        <input type="text" name="name" id="name" v-model.trim="name" required/>
       </div>
       <div class="form-signIn">
         <label for="email">Email: </label>
@@ -35,8 +30,7 @@ export default {
   name: "Register",
     data() {
       return {
-        lastName: '',
-        firstName: '',
+        name: '',
         email: '',
         password: ''
       }
@@ -47,8 +41,7 @@ export default {
     async signUp() {
       try {
         const credentials = {
-          lastName: this.lastName,
-          firstName: this.firstName,
+          name: this.name,
           email: this.email,
           password: this.password
         };
