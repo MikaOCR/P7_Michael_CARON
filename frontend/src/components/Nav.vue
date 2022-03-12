@@ -1,43 +1,51 @@
 <template>
-	<div id="NavLink">
-		<div id="logged">
-			<router-link :to="{ name: 'Forum' }">Accueil</router-link> 
-			<router-link :to="{ name: 'UserProfile' }">Profil</router-link>
-			<router-link @click.prevent="handleLogout" :to="{ name: 'Login' }">Se déconnecter</router-link>			
-			<router-link :to="{ name: 'Register' }">S'inscrire</router-link>
-			<router-link :to="{ name: 'Login' }">Se connecter</router-link>		
-		</div>		
-	</div>
+	<ul id="navBloc">
+		<template v-if="user">
+			<li>
+				<router-link :to="{ name: 'Forum' }">Accueil</router-link>
+			</li>
+			<li>
+				<router-link :to="{ name: 'UserProfile' }">Profil</router-link>
+			</li>
+			<li>
+				<a href="#" @click.prevent="logOut">Se déconnecter</a>
+			</li>
+		</template>
+		<template v-else>
+			<li>
+				<router-link :to="{ name: 'Register' }">S'inscrire</router-link>
+			</li>
+			<li>
+				<router-link :to="{ name: 'Login' }">Se connecter</router-link>
+			</li>
+		</template>
+	</ul>
 </template>
 
 <script>
-export default {
-	name: 'NavLink',
-	data(){
-		return{
+import { mapGetters } from 'vuex'
 
-		}
+export default {
+	computed: {
+		...mapGetters({
+			authenticated: 'auth/authenticated',
+			user: 'auth/user',
+		})
 	},
 	methods: {
-/* 		created(){
-			const LoggedUser = sessionStorage.getItem('userAuth')
-			console.log(LoggedUser);
-		},
-
-		notLogged(){
-			const notYetLogged = sessionStorage.getItem();
-			console.log(notYetLogged);
-
-		}, */
-
-		handleLogout(){
-            sessionStorage.removeItem('userAuth');
-            this.$router.push('/login');
-        },
-	},
+		logOut(){
+			const removeToken = sessionStorage.removeItem('token');
+			this.$router.push('/login');
+			console.log(removeToken);
+		}
+	}
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
+#navBloc {
+	display: flex;
+	list-style-type: none;
+}
 </style>

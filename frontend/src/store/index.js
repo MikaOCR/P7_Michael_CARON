@@ -1,68 +1,41 @@
+import axios from 'axios';
 import { createStore } from 'vuex';
-import authModule from './modules/auth';
-/* import axios from 'axios'; */
-
-/* const getDefaultState = () => {
-  return {
-    token:'',
-    user: {}
-  };
-};
-
-export default createStore({
-  strict: true,
-  state: getDefaultState(),
-
-  getters: {
-    isLoggedIn: state => {
-      return state.token;
-    },
-    getUser: state => {
-      return state.user;
-    }
-  },
-  mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token;
-    },
-    SET_USER: (state, user) => {
-      state.user = user;
-    },
-    RESET: state => {
-      Object.assign(state, getDefaultState());
-    }
-  },
-  actions: {
-    login: ({ commit }, { token, user }) => {
-      commit('SET_TOKEN', token);
-      commit('SET_USER', user);
-
-      // set auth header
-      Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    },
-    logout: ({ commit }) => {
-      commit('RESET', '');
-    },
-    forceRerender(){
-      this.listComponent +=1;
-    }
-  },
-  modules: {
-
-  }
-}) */
+import auth from './auth';
 
 export default createStore({
   state: {
-
+    posts: [],
+    users: [],
+    oneUser: [],
+  },
+  getters: {
+    allPosts: (state) => state.posts,
+    allUsers: (state) => state.users,
+    oneUser: (state) => state.oneUser
   },
   mutations: {
-
+    SET_POSTS(state, posts) {
+      state.posts = posts
+    },
+    SET_USERS(state, users) {
+      state.users = users
+    },
+    SET_ONE_USER(state, oneUser) {
+      state.oneUser = oneUser
+    }
   },
   actions: {
-
+    getPosts({ commit }) {
+      axios.get('/forum').then(response => { commit('SET_POSTS', response.data) }).catch(error => console.log(error));
+    },
+    getUsers({ commit }) {
+      axios.get('/admin/users').then(response => { commit('SET_USERS', response.data) }).catch(error => console.log(error));
+    },
+    getOneUser({ commit }) {
+      axios.get('/admin/users').then(response => { commit('SET_ONE_USER', response.data) }).catch(error => console.log(error));
+    }    
   },
   modules: {
-    auth:authModule
+    auth
   }
 })

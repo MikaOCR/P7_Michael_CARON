@@ -26,6 +26,7 @@
 <script>
 import AuthService from '@/services/auth.service.js';
 
+
 export default {
   name: "Register",
     data() {
@@ -52,6 +53,9 @@ export default {
         this.msg = error.response.data.msg;
       }
     }
+
+
+
   }
 }
 </script>

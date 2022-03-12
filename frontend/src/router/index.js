@@ -26,7 +26,19 @@ const routes = [
     name: "UserProfile",
     meta: { requiredAuth: true },
     component: () => import(/* webpackChunkName: "UserProfile" */ '../views/UserProfile.vue')
-  }
+  },
+  {
+    path: "/forum/:id/edition",
+    name: "EditPost",
+    meta: { requiredAuth: true },
+    component: () => import(/* webpackChunkName: "UserProfile" */ '../views/EditPost.vue')
+  },
+  {
+    path: "/admin/users",
+    name: "AdminTab",
+    meta: { requiredAuth: true },
+    component: () => import(/* webpackChunkName: "UserProfile" */ '../views/AdminTab.vue')
+  },
   
 ]
 
@@ -36,7 +48,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const loggedIn = sessionStorage.getItem('userAuth');
+  const loggedIn = sessionStorage.getItem('token');
   const isAuth = to.matched.some((record) => record.meta.requiredAuth);
   const isHide = to.matched.some((record) => record.meta.hideForAuth);
 
