@@ -35,7 +35,7 @@ export default {
 	methods: {
 		logOut(){
 			const removeToken = sessionStorage.removeItem('token');
-			this.$router.push('/login');
+			this.$router.replace('/login');
 			console.log(removeToken);
 		}
 	}

@@ -7,7 +7,7 @@
                     <div id="Username">Auteur du message</div>
                 </div>
                 <div id="title">{{ gettersPost.title }}</div>
-                <router-link :to="{name: 'Edition', params: {id: gettersPost.id}}" v-if="user.userId === gettersPost.authorId">
+                <router-link :to="{name: 'Edition', params: {id: gettersPost.id}}" v-if="user.userId === gettersPost.authorId || user.role === 'ADMIN'">
                     <button id="edit">Editer</button>
                 </router-link>
             </div>

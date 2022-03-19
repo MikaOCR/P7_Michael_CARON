@@ -8,6 +8,7 @@
             <div class="userInfo">
                 <p>Adresse email : {{ user.userEmail }}</p>
             </div>
+            <button id="delete" @click.prevent="deleteUser" v-if="user.userEmail"> Supprimer </button>
         </div>
         <div id="bioText">
             {{ content.bio }}
@@ -40,6 +41,12 @@ export default {
             axios.post('/profil/' + this.$route.params.id, this.Form).then(response => console.log(response));
             this.$router.replace('/forum');
         },
+        deleteUser(){
+            axios.delete('/profil/' + this.$route.params.id).then(response => console.log(response));
+            const removeToken = sessionStorage.removeItem('token');
+            this.$router.replace('/login');
+            console.log(removeToken);
+        }        
     },
     computed: {
     ...mapGetters({

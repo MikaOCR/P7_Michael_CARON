@@ -34,24 +34,6 @@ export default {
   },
 
   methods: {
-/*     async login() {
-      const response = await axios.post('/login', {
-        email: this.email,
-        password: this.password
-      });
-      console.log(response);
-      const userToken = sessionStorage.setItem('userAuth', response.data.token);
-      const userId = sessionStorage.setItem('userId', response.data.userId);
-      console.log(userId);
-
-      if(userToken === false){
-        alert('Connexion impossible')
-        this.$router.push('/login')
-        } else {
-          alert('Vous êtes connecté !')
-          this.$router.push('/profil');
-        }
-    }, */
     ...mapActions({
       signIn: 'auth/signIn'
     }),

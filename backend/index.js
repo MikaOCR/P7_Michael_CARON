@@ -35,7 +35,7 @@ async function main() {
           } else {
             res.status(200).send({"message": "Utilisateur créé !"});
           }
-/*           console.log(newUser); */
+          console.log(newUser);
     });
 
     //route POST Login -- Requête vers la bdd
@@ -62,7 +62,8 @@ async function main() {
                         userInfo: {
                             userId: userExist.id,
                             userEmail: userExist.email,
-                            userName: userExist.name
+                            userName: userExist.name,
+                            role: userExist.role
                         },
                         token,
                     })
@@ -170,7 +171,19 @@ async function main() {
       });
       res.json(thisBio);
       console.log(thisBio);
-    });  
+    });
+
+    //route DELETE pour supprimer UN USER(profil) -- Requête vers la bdd
+    app.delete("/profil/:id", auth, async (req, res) => {
+      const { id } = req.params
+      const deleteAuthor = await prisma.user.delete({
+        where: {
+          id: Number(id),
+        }
+      });
+      res.json(deleteAuthor);
+      console.log(deleteAuthor);
+    })  
 
 }
   

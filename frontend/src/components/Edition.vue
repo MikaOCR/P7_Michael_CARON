@@ -7,7 +7,7 @@
                     <div id="Username">Auteur du message</div>
                 </div>
                 <div id="title">{{ post.title }}</div>
-                <button id="delete" @click.prevent="DeletePost" v-if="user.userId === post.authorId"> Supprimer </button>
+                <button id="delete" @click.prevent="deletePost" v-if="user.userId === post.authorId || user.role === 'ADMIN'"> Supprimer </button>
             </div>
             <div id="content">{{ post.content }}</div>
         </div>
@@ -57,7 +57,7 @@ export default {
             axios.put('/edition/' + this.$route.params.id, this.Form).then(response => console.log(response));
             this.$router.replace('/forum');
         },
-        DeletePost(){
+        deletePost(){
             axios.delete('/edition/' + this.$route.params.id).then(response => console.log(response));
             this.$router.replace('/forum');
         }
