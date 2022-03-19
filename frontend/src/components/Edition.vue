@@ -1,41 +1,38 @@
 <template>
-    <div id="lastPost">
-        <h3>Derniers messages</h3>
-        <div id="lastMessages" v-for="gettersPost in gettersPosts" :key="gettersPost.id">
+    <div id="edit">
+        <h1>Edition</h1>
+        <div id="lastMessages">
             <div id="headerMessage" >
                 <div id="userInfo">
                     <div id="Username">Auteur du message</div>
                 </div>
-                <div id="title">{{ gettersPost.title }}</div>
-                <router-link :to="{name: 'Edition', params: {id: gettersPost.id}}" v-if="user.userId === gettersPost.authorId">
-                    <button id="edit">Editer</button>
-                </router-link>
+                <div id="title">{{ post.title }}</div>
+                <button id="delete" @click.prevent="DeletePost" v-if="user.userId === post.authorId"> Supprimer </button>
             </div>
-            <div id="content">{{ gettersPost.content }}</div>
+            <div id="content">{{ post.content }}</div>
         </div>
         <div id="TextBox">
-            <form @submit.prevent="addPost" method="POST" class="form-message"> 
+            <form @submit.prevent="editPost" method="PUT" class="form-message"> 
                 <textarea name="title" id="title" rows="1" placeholder="Entrez votre titre..." v-model.trim="Form.title" required></textarea>
                 <textarea name="content" id="content" rows="12" cols="35" maxlength="500" placeholder="Envoyez votre message..." v-model.trim="Form.content" required></textarea><br>
                 <input type="submit" name="submit" value="Envoyer le message">
             </form>
-        </div>
+        </div>    
     </div>
+
 </template>
 
 <script>
-import axios from 'axios';
 import { mapGetters, mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
-
     data () {
         return {
-            posts: [],
+            post: [],
             Form: {
                 title: '',
                 content: '',
-                authorEmail: '',
             },
         }
     },
@@ -46,31 +43,35 @@ export default {
         ...mapGetters({
             authenticated: 'auth/authenticated',
             user: ['auth/user'],
-		}),
-        gettersPosts(){
-            return this.$store.getters.allPosts
+        }),
+        gettersPost(){
+            return this.$store.getters.onePost
         },
         gettersUser(){
             return this.$store.getters.user
         }
 
-    },    
-    methods: {
-        addPost() {
-            axios.post('/forum', this.Form).then(() => this.$store.dispatch('getPosts')).catch(error => console.log(error));     //objet data
-        },
-
     },
+    methods: {
+        editPost(){
+            axios.put('/edition/' + this.$route.params.id, this.Form).then(response => console.log(response));
+            this.$router.replace('/forum');
+        },
+        DeletePost(){
+            axios.delete('/edition/' + this.$route.params.id).then(response => console.log(response));
+            this.$router.replace('/forum');
+        }
+    },
+    
     mounted(){
-        this.$store.dispatch('getPosts');
+        axios.get('/edition/' + this.$route.params.id).then(response => this.post = response.data).catch(error => console.log(error));  
     },
 }
 </script>
 
-
 <style lang="scss" scoped>
 
-#lastPost {
+#edit {
     display: flex;
     flex-direction: column;
     align-items: center;

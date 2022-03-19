@@ -78,20 +78,25 @@ async function main() {
 
 
     //route POST pour créer un post(forum) -- Envoi du formulaire d'inscription à la bdd
-    app.post("/forum", async (req, res) => {
-        const { title, content, authorEmail } = req.body
+    app.post("/forum", auth, async (req, res) => {
+        const { title, content } = req.body
+        const author = await prisma.user.findUnique({
+          where: {
+            id: req.auth.userId,
+          }
+        })
         const result = await prisma.post.create({
           data: {
             title,
             content,
-            author: { connect: { email: authorEmail } },
+            author: { connect: { email: author.email } },
           },
         })
         res.json(result)
       })
 
     //route GET pour afficher les x derniers post(forum) -- Requête vers la bdd
-    app.get("/forum", async (req, res) => {
+    app.get("/forum", auth, async (req, res) => {
         const lastPost = await prisma.post.findMany({
             take: 5,
             orderBy: {
@@ -102,50 +107,37 @@ async function main() {
         console.log(lastPost);
     });
 
-    //route GET pour afficher les users -- Requête vers la bdd
-    app.get('/admin/users', async (req, res) => {
-        const users = await prisma.user.findMany({
-            take: 10,
-        })
-        res.json(users)
-      })
-      
-    //route GET pour afficher un user -- Requête vers la bdd
-    app.get('/admin/users', async (req, res) => {
-        const users = await prisma.user.findUnique({
-            where: {
-                id: userInfo.id
-            },
-            select: {
-                id: true,
-                email: true,
-                name: true
-            }
-        })
-        res.json(users)
-      })
-
     //route GET pour afficher UN post(forum) -- Requête vers la bdd
-    app.put('/post/:id/edition', async (req, res) => {
-        const { id } = req.params
-        const { title, content } = req.body
-        try {
-          const post = await prisma.post.update({
-            where: { id: Number(id) },
-            data: {
-                title,
-                content,
-            },
-          })
-      
-          res.json(post)
-        } catch (error) {
-          res.json({ error: `Post with ID ${id} does not exist in the database` })
+    app.get("/edition/:id", auth, async (req, res) => {
+      const id = req.params.id;
+      const thisPost = await prisma.post.findFirst({
+        where: {
+          id: Number(id)
         }
+      });
+      res.json(thisPost);
+      console.log(thisPost);
+    });    
+
+    //route PUT pour modifier UN post(forum) -- Requête vers la bdd
+    app.put("/edition/:id", auth, async (req, res) => {
+      const { title, content } = req.body;
+      const id = req.params.id;
+      const updatePost = await prisma.post.update({
+          where: {
+              id: Number(id)
+          },
+          data: {
+              title: title,
+              content: content,
+          },
       })
+      res.json(updatePost);
+      console.log(updatePost);
+    });
 
     //route DELETE pour supprimer UN post(forum) -- Requête vers la bdd
-    app.delete(`/post/:id`, async (req, res) => {
+    app.delete("/edition/:id", auth, async (req, res) => {
         const { id } = req.params
         const post = await prisma.post.delete({
           where: {
@@ -155,33 +147,30 @@ async function main() {
         res.json(post)
       })
 
-    //route PUT pour modifier UN post(forum) -- Requête vers la bdd
-    app.put("/:id", async (req, res) => {
-        const { id, title, post } = req.body;
-        const updatePost = await prisma.post.update({
-            where: {
-                id: id,
-            },
-            data: {
-                title: title,
-                post: post,
-            },
-        })
-        res.json(updatePost);
-        console.log(updatePost);
-    });
-
     //route POST pour créer une Bio (profil) -- Envoi du formulaire d'inscription à la bdd
-    app.post("/profil", async (req, res) => {
-      const { user, content } = req.body
+    app.post("/profil/:id", async (req, res) => {
+      const { id } = req.params
+      const { content } = req.body
       const result = await prisma.profile.create({
         data: {
-          user,
+          user: { connect: { id: Number(id) } },
           bio : content
         },
       })
       res.json(result)
     })
+
+    //route GET pour afficher UNE bio -- Requête vers la bdd
+    app.get("/profil/:id", auth, async (req, res) => {
+      const id = req.params.id;
+      const thisBio = await prisma.profile.findFirst({
+        where: {
+          userId: Number(id)
+        }
+      });
+      res.json(thisBio);
+      console.log(thisBio);
+    });  
 
 }
   

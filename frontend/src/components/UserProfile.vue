@@ -10,7 +10,7 @@
             </div>
         </div>
         <div id="bioText">
-            Ceci est une bio    <!-- {{ content }} -->
+            {{ content.bio }}
         </div>
         <div id="bio">
             <form @submit.prevent="addBio" method="POST">
@@ -28,6 +28,7 @@ import axios from 'axios'
 export default {
     data(){
         return {
+            content: [],
             Form: {
                 user: '',
                 content:'',
@@ -36,19 +37,19 @@ export default {
     },
     methods: {
         addBio(){
-            axios.post('/profil', this.Form).then(response => console.log(response))
+            axios.post('/profil/' + this.$route.params.id, this.Form).then(response => console.log(response));
+            this.$router.replace('/forum');
         },
-
-        getBio(){
-            axios.get('/profil').then(response => console.log(response))
-        }
     },
     computed: {
     ...mapGetters({
         authenticated: 'auth/authenticated',
         user: 'auth/user',
-    })
+        })
 	},
+    mounted(){
+        axios.get('/profil/' + this.$route.params.id).then(response => this.content = response.data)
+    }
 
 }
 </script>

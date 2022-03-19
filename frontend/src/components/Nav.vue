@@ -5,7 +5,7 @@
 				<router-link :to="{ name: 'Forum' }">Accueil</router-link>
 			</li>
 			<li>
-				<router-link :to="{ name: 'UserProfile' }">Profil</router-link>
+				<router-link :to="{name: 'UserProfile', params: {id: user.userId}}">Profil</router-link>
 			</li>
 			<li>
 				<a href="#" @click.prevent="logOut">Se déconnecter</a>

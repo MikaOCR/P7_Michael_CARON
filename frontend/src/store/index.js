@@ -7,11 +7,13 @@ export default createStore({
     posts: [],
     users: [],
     oneUser: [],
+    onePost: [],
   },
   getters: {
     allPosts: (state) => state.posts,
     allUsers: (state) => state.users,
-    oneUser: (state) => state.oneUser
+    oneUser: (state) => state.oneUser,
+    onePost: (state) => state.onePost
   },
   mutations: {
     SET_POSTS(state, posts) {
@@ -22,6 +24,9 @@ export default createStore({
     },
     SET_ONE_USER(state, oneUser) {
       state.oneUser = oneUser
+    },
+    SET_ONE_POST(state, onePost) {
+      state.onePost = onePost
     }
   },
   actions: {
@@ -33,9 +38,12 @@ export default createStore({
     },
     getOneUser({ commit }) {
       axios.get('/admin/users').then(response => { commit('SET_ONE_USER', response.data) }).catch(error => console.log(error));
-    }    
+    },
+    getOnePost({ commit }) {
+      axios.get('/edition/' + this.$route.params.id).then(response => { commit('SET_ONE_POST', response.data) }).catch(error => console.log(error));
+    }
   },
   modules: {
     auth
-  }
+  },
 })
