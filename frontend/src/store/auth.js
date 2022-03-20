@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export const auth = {
     namespaced: true,
+    strict: true,
 
     state: {
         token: null,

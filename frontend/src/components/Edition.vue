@@ -87,7 +87,7 @@ export default {
 
     #headerMessage {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         padding: 10px 5px 5px 5px ;
         background-color: #5b7491;
         
@@ -100,7 +100,7 @@ export default {
         }
     }
 
-    #lastText {
+    #content {
         margin: 10px;
     }
 }

@@ -9,13 +9,17 @@
 
 <script>
 import Nav from './components/Nav.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'app',
   components: {
     Nav
   },
-
+  ...mapGetters({
+      authenticated: 'auth/authenticated',
+      user: ['auth/user'],
+		}),  
 }
 </script>
 

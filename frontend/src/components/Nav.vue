@@ -1,6 +1,6 @@
 <template>
 	<ul id="navBloc">
-		<template v-if="user">
+		<template v-if="authenticated">
 			<li>
 				<router-link :to="{ name: 'Forum' }">Accueil</router-link>
 			</li>
@@ -34,10 +34,11 @@ export default {
 	},
 	methods: {
 		logOut(){
-			const removeToken = sessionStorage.removeItem('token');
+			const removeToken = sessionStorage.clear();
 			this.$router.replace('/login');
 			console.log(removeToken);
-		}
+		},
+
 	}
 }
 </script>

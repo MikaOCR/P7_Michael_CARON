@@ -81,7 +81,8 @@ export default {
 
 #bioText {
     border: 1px solid black;
-    margin: 10px 0 10px 0;
+    padding: 10px;
+    margin: 10px;
     width: 30%;
     height: 220px;
     background-color: #ffff;

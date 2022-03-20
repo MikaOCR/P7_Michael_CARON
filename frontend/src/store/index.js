@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 import {auth} from './auth';
 
 export default createStore({
+  strict: true,
   state: {
     posts: [],
     onePost: [],

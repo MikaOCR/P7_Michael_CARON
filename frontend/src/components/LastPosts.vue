@@ -4,7 +4,7 @@
         <div id="lastMessages" v-for="gettersPost in gettersPosts" :key="gettersPost.id">
             <div id="headerMessage" >
                 <div id="userInfo">
-                    <div id="Username">Auteur du message</div>
+                    <div id="Username">{{ gettersPost.createdAt }}</div>
                 </div>
                 <div id="title">{{ gettersPost.title }}</div>
                 <router-link :to="{name: 'Edition', params: {id: gettersPost.id}}" v-if="user.userId === gettersPost.authorId || user.role === 'ADMIN'">
@@ -17,7 +17,10 @@
             <form @submit.prevent="addPost" method="POST" class="form-message"> 
                 <textarea name="title" id="title" rows="1" placeholder="Entrez votre titre..." v-model.trim="Form.title" required></textarea>
                 <textarea name="content" id="content" rows="12" cols="35" maxlength="500" placeholder="Envoyez votre message..." v-model.trim="Form.content" required></textarea><br>
-                <input type="submit" name="submit" value="Envoyer le message">
+                <div>
+                    <input type="submit" name="submit" value="Envoyer le message">
+<!--                     <input type="file" @change="onFileSelected"> -->
+                </div>
             </form>
         </div>
     </div>
@@ -36,7 +39,9 @@ export default {
                 title: '',
                 content: '',
                 authorEmail: '',
+/*                 selectedFile: null */
             },
+            
         }
     },
     computed: {
@@ -59,6 +64,10 @@ export default {
         addPost() {
             axios.post('/forum', this.Form).then(() => this.$store.dispatch('getPosts')).catch(error => console.log(error));     //objet data
         },
+        /* onFileSelected(event){
+            this.Form.selectedFile = event.target.files[0]
+            console.log(event);
+        } */
 
     },
     mounted(){
@@ -86,7 +95,7 @@ export default {
 
     #headerMessage {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         padding: 10px 5px 5px 5px ;
         background-color: #5b7491;
         
@@ -99,7 +108,7 @@ export default {
         }
     }
 
-    #lastText {
+    #content {
         margin: 10px;
     }
 }
